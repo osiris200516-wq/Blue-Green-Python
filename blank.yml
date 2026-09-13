@@ -2,56 +2,34 @@
 
 name: CI
 
-# Controls when the workflow will run
 on:
+
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+
   workflow_dispatch:
 
-
 jobs:
-  build:
+  ci:
+    name: Integracion Continua
     runs-on: ubuntu-latest
 
-    env: 
-      platform: aws
-      region: us-east-1
-      account: development
-
-      
     steps:
-      - uses: actions/checkout@v4
 
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Descargar Codigo #Descarga el contenido del repositorio
+        uses: actions/checkout@v4 # Checkout v4: accion oficial de github para descargar el codigo fuente del repositorio en el que se ejecuta el flujo del trabajo
 
-      - name: Run a multi-line script
+      - name: Configurar python #Configura la version de Python que se utilizara en el flujo de trabajo 
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Validar sintaxis de python
+        run: python -m py_compile app.py
+
+      - name: Ejecutar pruebas básicas
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-
-        #HolaMundo
-      - name: Mostrar mensaje inicial
-        run: echo "Hola Mundo"
-
-        #Variables 
-      - name: Auditoria de Variables de entorno 
-        run: | 
-         echo "Plataforma de despliegue: ${{ env.plataform }}"
-         echo "Region de despliegue: ${{ env.region}}"
-         echo "Cuenta de despliegue: ${{ env.account}}"
-
-        #InspeccionProfunda
-      - name: Debug del playload completo
-        run: echo "${{ toJSON(github.event) }}"
-
-        #Metadatos
-      - name: Mostrar Metadatos Basicos
-        run: |
-         echo "Usuario ejecutor: ${{ github.actor }}"
-         echo "Repositorio activo: ${{ github.repository }}"
+          python -c "from app import crear_servidor; print('Codigo Valido')"
 
       
 
