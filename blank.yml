@@ -90,3 +90,19 @@ cd-green:
     - name: Ejecutar prueba basica
       run: |
         python -c "from app import crear_servidor; print('Codigo valido')"
+
+#Probar Green
+    - name: Probar Green
+    
+      run: |
+        echo "Probando la version Green"
+        response=$(curl -s http://127.0.0.1:8001/health)
+        echo "respuesta de Green: $response"
+        if [[ "$respuesta" == *"Version Green"* ]]; then
+        echo "La version Green esta funcionando correctamente"
+        else
+        echo "La version Green no esta funcionando correctamente"
+        exit 1
+        fi
+        
+      
