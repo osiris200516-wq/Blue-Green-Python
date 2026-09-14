@@ -27,3 +27,46 @@ push:
         - name: Ejecutar prueba basica
           run: |
             python -c "from app import crear_servidor; print('Codigo valido')"
+
+#Blue-Green
+cd:
+    name: Despliegue Blue-Green
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Descargar codigo  # Descarga el contenido del repositorio
+      uses: actions/checkout@v4 # Checkout v4: acción oficial de GitHub
+
+    - name: Configurar Python # Configura la versión de python
+      uses: actions/setup-python@v4 # Setup-python v4
+      with:
+        python-version: "3.11" # Versión de python a utilizar
+
+    - name: Validar sintaxis de Python # Valida la sintaxis del código fuente
+      run: python -m py_compile app.py 
+
+    - name: Ejecutar prueba basica
+      run: |
+        python -c "from app import crear_servidor; print('Codigo valido')"
+
+#Iniciar Blue
+cd-blue:
+    name: Iniciar Blue
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Descargar codigo  # Descarga el contenido del repositorio
+      uses: actions/checkout@v4 # Checkout v4: acción oficial de GitHub
+
+    - name: Configurar Python # Configura la versión de python
+      uses: actions/setup-python@v4 # Setup-python v4
+      with:
+        python-version: "3.11" # Versión de python a utilizar
+
+    - name: Validar sintaxis de Python # Valida la sintaxis del código fuente
+      run: python -m py_compile app.py 
+
+    - name: Ejecutar prueba basica
+      run: |
+        python -c "from app import crear_servidor; print('Codigo valido')"
+        
