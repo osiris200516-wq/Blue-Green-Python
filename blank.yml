@@ -131,3 +131,12 @@ cd-green:
           echo "La version Green no esta activa"
         exit 1
        fi
+
+#Finalizar Servidores
+    
+    - name: Finalizar Servidores
+      run: |
+        echo "Finalizando servidores"
+        pkill -f "python app.py"
+        echo "Servidores finalizados" 
+        
