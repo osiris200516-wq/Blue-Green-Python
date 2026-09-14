@@ -104,5 +104,16 @@ cd-green:
         echo "La version Green no esta funcionando correctamente"
         exit 1
         fi
+
+#Cambiar trafico de Green a Blue
+
+    - name: Cambiar trafico de Green a Blue
+    
+      run: |
+        echo "Cambiando el trafico de Green a Blue"
+        run: |
+        echo "Cambiar el traficoo de Green-Blue"
+        echo "8001" > active_port.txt
+        echo "El trafico se ha cambiado :)"
+        echo "Nuevo puerto: 8001"
         
-      
