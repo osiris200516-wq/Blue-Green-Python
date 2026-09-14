@@ -1,36 +1,28 @@
 # This is a basic workflow to help you get started with Actions
-
-name: CI
-
-on:
-
-  push:
-    branches: [ "main" ]
-
-  workflow_dispatch:
-
-jobs:
-  ci:
-    name: Integracion Continua
+cd: 
+    name: Despliegue Blue-Green
     runs-on: ubuntu-latest
+    needs: ci
 
-    steps:
+    steps: 
+      - name: Descargar codigo  # Descarga el contenido del repositorio
+        uses: actions/checkout@v4 # Checkout v4: acción oficial de GitHub
 
-      - name: Descargar Codigo #Descarga el contenido del repositorio
-        uses: actions/checkout@v4 # Checkout v4: accion oficial de github para descargar el codigo fuente del repositorio en el que se ejecuta el flujo del trabajo
+      - name: Configurar Python # Configura la versión de python
+        uses: actions/setup-python@v4 # Setup-python v4
+        with: 
+          python-version: "3.11" # Versión de python a utilizar
 
-      - name: Configurar python #Configura la version de Python que se utilizara en el flujo de trabajo 
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Validar sintaxis de python
-        run: python -m py_compile app.py
-
-      - name: Ejecutar pruebas básicas
+      - name: Iniciar version Blue
         run: |
-          python -c "from app import crear_servidor; print('Codigo Valido')"
+          python app.py --version blue --puerto 8000
+          2>&1 &.
+          echo $! > blue.pid
+          sleep 2
 
-      
-
-
+      - name: Iniciar version Green
+        run: |
+          python app.py --version green --puerto 8001
+          2>&1 &.
+          echo $! > green.pid
+          sleep 2
