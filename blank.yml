@@ -116,4 +116,18 @@ cd-green:
         echo "8001" > active_port.txt
         echo "El trafico se ha cambiado :)"
         echo "Nuevo puerto: 8001"
-        
+
+#Verificar Version Activa :)
+    - name: Verificar Version Activa
+       run: |
+       puerto=$(cat active_port.txt)
+       echo "Puerto: $puerto"
+       response=$(curl -s http://127.0.0.1:$puerto/health)
+       echo "respuesta: $response"
+
+       if [[ "$response" == *"Version Green"* ]]; then
+       echo "La version Green esta activa"
+       else
+          echo "La version Green no esta activa"
+        exit 1
+       fi
